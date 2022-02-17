@@ -30,7 +30,6 @@ class Card extends React.Component {
   };
 
   handleDeletedClick = () => {
-    console.log('###: 1 level');
     this.props.onDeleted();
   };
 

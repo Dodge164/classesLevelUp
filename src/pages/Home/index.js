@@ -1,5 +1,5 @@
 import React from 'react';
-import { database } from '../../services/firebase';
+// import { database } from '../../services/firebase';
 
 import {
   ClockCircleOutlined,
@@ -25,52 +25,19 @@ class HomePage extends React.Component {
   state = {
     wordsArr: [],
   };
-
-  inputRef = React.createRef();
-
-  // constructor() {
-  //   super();
-  //   const { getCardsRef } = this.context;
-  //   getCardsRef()
-  //     .once('value')
-  //     .then((res) => {
-  //       this.state = {
-  //         wordsArr: res.val(),
-  //       };
-  //       console.log('===> this.state.wordsArr', this.state.wordsArr);
-  //     });
-  // }
-
-  urlRequest = `/cards/${this.props.user.uid}`;
+  constructor(props) {
+    super(props);
+    this.refEngInput = React.createRef();
+  }
 
   componentDidMount() {
     const { getUserCardsRef } = this.context;
     getUserCardsRef().on('value', (res) => {
-      this.setState(
-        {
-          wordsArr: res.val() || [],
-        }
-        // this.setNewWord
-      );
+      this.setState({
+        wordsArr: res.val() || [],
+      });
     });
   }
-
-  // setNewWord = () => {
-  //   const { wordsArr } = this.state;
-
-  //   database.ref('/cards').set([
-  //     ...wordsArr,
-  //     {
-  //       id: +new Date(),
-  //       eng: 'mouse',
-  //       rus: 'мышь',
-  //     },
-  //   ]);
-  // };
-
-  // handleChangeInput = (e) => {
-  //   this.setState({ value: e.target.value });
-  // };
 
   handleSubmitButton = ({ eng, rus }) => {
     const { getUserUidRef } = this.context;
@@ -95,7 +62,7 @@ class HomePage extends React.Component {
 
   render() {
     const { wordsArr } = this.state;
-    console.log('===> this.props.user.uid', this.props.user.uid);
+
     return (
       <>
         <BackgroundBlock backgroundImg={firstBackground} fullHeight>
@@ -105,9 +72,8 @@ class HomePage extends React.Component {
             запас.
           </Paragraph>
           <Button
-            onClick={() => {
-              console.log('===> current', this.inputRef);
-              this.inputRef.current.focus();
+            onBtnClick={() => {
+              this.refEngInput.current.focus();
             }}
           >
             Начать бесплатный урок
@@ -152,9 +118,9 @@ class HomePage extends React.Component {
             Кликайте по карточкам и узнавайте новые слова, быстро и легко!
           </Paragraph>
           <CardList
-            refEngInput={(el) => (this.refInput = el)}
+            refEngInput={this.refEngInput}
             onSubmit={this.handleSubmitButton}
-            // onDeletedItem={this.handleDeletedItem}
+            onDeletedItem={this.handleDeletedItem}
             items={wordsArr}
           />
         </Section>
