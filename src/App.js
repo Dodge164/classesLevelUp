@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import HomePage from './pages/Home';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import LoginPage from './pages/Login';
+
+import { Spin } from 'antd';
+
+import s from './App.module.scss';
+import FirebaseContext from './context/firebaseContext';
+class App extends React.Component {
+  state = {
+    user: null,
+  };
+
+  componentDidMount() {
+    console.log('===> context', this.context);
+    const { auth, setUserUid } = this.context;
+    auth.onAuthStateChanged((user) => {
+      console.log('===> onAuthStateChanged');
+      if (user) {
+        setUserUid(user.uid);
+        this.setState({ user });
+      } else {
+        setUserUid(null);
+        this.setState({ user: false });
+      }
+    });
+  }
+
+  render() {
+    const { user } = this.state;
+    if (user === null) {
+      return (
+        <div className={s.wrap_spin}>
+          <Spin tip="Loading..." />
+        </div>
+      );
+    }
+    return <>{user ? <HomePage user={user} /> : <LoginPage />}</>;
+  }
 }
-
+App.contextType = FirebaseContext;
 export default App;
