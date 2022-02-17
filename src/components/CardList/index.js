@@ -6,19 +6,13 @@ import s from './CardList.module.scss';
 
 class CardList extends React.Component {
   formRef = React.createRef();
-  inputRef = React.createRef();
-
-  constructor(props) {
-    super(props);
-
-    props.refEngInput && props.refEngInput(this.inputEngRef);
+  constructor({ refEngInput }) {
+    super();
+    this.refEngInput = refEngInput;
   }
 
-  handleChangeInput = (e) => {
-    this.setState({ value: e.target.value });
-  };
-
   handleSubmitForm = (values) => {
+    console.log('===> values', values);
     const { onSubmit } = this.props;
     onSubmit && onSubmit(values);
 
@@ -47,10 +41,17 @@ class CardList extends React.Component {
           onFinish={this.handleSubmitForm}
         >
           <Form.Item label="English Word" name="eng">
-            <Input ref={this.inputEngRef} placeholder="input placeholder" />
+            <Input
+              onChange={this.handleChangeEngInput}
+              ref={this.refEngInput}
+              placeholder="input placeholder"
+            />
           </Form.Item>
           <Form.Item label="Russian Word" name="rus">
-            <Input placeholder="input placeholder" />
+            <Input
+              onChange={this.handleChangeRusInput}
+              placeholder="input placeholder"
+            />
           </Form.Item>
           <Button type="primary" htmlType="submit">
             Add

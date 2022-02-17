@@ -25,54 +25,24 @@ class HomePage extends React.Component {
   state = {
     wordsArr: [],
   };
-
-  inputRef = React.createRef();
-
-  // constructor() {
-  //   super();
-  //   const { getCardsRef } = this.context;
-  //   getCardsRef()
-  //     .once('value')
-  //     .then((res) => {
-  //       this.state = {
-  //         wordsArr: res.val(),
-  //       };
-  //       console.log('===> this.state.wordsArr', this.state.wordsArr);
-  //     });
-  // }
-
-  urlRequest = `/cards/${this.props.user.uid}`;
+  constructor(props) {
+    super(props);
+    this.refEngInput = React.createRef();
+  }
 
   componentDidMount() {
     const { getUserCardsRef } = this.context;
     getUserCardsRef().on('value', (res) => {
-      this.setState(
-        {
-          wordsArr: res.val() || [],
-        }
-        // this.setNewWord
-      );
+      console.log('===> this.res', res);
+      console.log('===> val', res.val());
+      this.setState({
+        wordsArr: res.val() || [],
+      });
     });
   }
 
-  // setNewWord = () => {
-  //   const { wordsArr } = this.state;
-
-  //   database.ref('/cards').set([
-  //     ...wordsArr,
-  //     {
-  //       id: +new Date(),
-  //       eng: 'mouse',
-  //       rus: 'мышь',
-  //     },
-  //   ]);
-  // };
-
-  // handleChangeInput = (e) => {
-  //   this.setState({ value: e.target.value });
-  // };
-
   handleSubmitButton = ({ eng, rus }) => {
+    console.log('===> this.context', this.context);
     const { getUserUidRef } = this.context;
     const { wordsArr } = this.state;
 
@@ -105,13 +75,19 @@ class HomePage extends React.Component {
             запас.
           </Paragraph>
           <Button
-            onClick={() => {
-              console.log('===> current', this.inputRef);
-              this.inputRef.current.focus();
+            onBtnClick={() => {
+              this.refEngInput.current.focus();
             }}
           >
             Начать бесплатный урок
           </Button>
+          <button
+            onClick={() => {
+              console.log('===> кнопка ');
+            }}
+          >
+            кнопка
+          </button>
         </BackgroundBlock>
         <Section className={s.textCenter}>
           <Header size="l">
@@ -152,7 +128,7 @@ class HomePage extends React.Component {
             Кликайте по карточкам и узнавайте новые слова, быстро и легко!
           </Paragraph>
           <CardList
-            refEngInput={(el) => (this.refInput = el)}
+            refEngInput={this.refEngInput}
             onSubmit={this.handleSubmitButton}
             // onDeletedItem={this.handleDeletedItem}
             items={wordsArr}

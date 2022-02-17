@@ -30,7 +30,7 @@ class Firebase {
 
   getUserCardsRef = () => this.database.ref(`/cards/${this.userUid}`);
 
-  getUserUidRef = () => this.database.ref(`/cards/${this.props.user.uid}`);
+  getUserUidRef = () => this.database.ref(`/cards/${this.userUid}`);
 }
 
 export default Firebase;
