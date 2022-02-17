@@ -6,30 +6,24 @@ import s from './CardList.module.scss';
 
 class CardList extends React.Component {
   formRef = React.createRef();
-  constructor({ refEngInput }) {
-    super();
-    this.refEngInput = refEngInput;
+  constructor(props) {
+    super(props);
+    this.refEngInput = props.refEngInput;
   }
 
   handleSubmitForm = (values) => {
-    console.log('===> values', values);
     const { onSubmit } = this.props;
     onSubmit && onSubmit(values);
 
     this.formRef.current.resetFields();
   };
 
-  // handleDeletedItem = (id) => {
-  //   this.setState(({ wordsArr }) => {
-  //     console.log('state', this.state);
-  //     const idx = wordsArr.findIndex((item) => item.id === id);
-  //     const newWordsList = [
-  //       ...wordsArr.slice(0, idx),
-  //       ...wordsArr.slice(idx + 1),
-  //     ];
-  //     return { wordsArr: newWordsList };
-  //   });
-  // };
+  handleDeletedItem = (id) => {
+    this.setState(({ wordsArr }) => {
+      const newWordsList = wordsArr.filter((item) => item.id !== id);
+      return { wordsArr: newWordsList };
+    });
+  };
 
   renderWordForm = () => {
     return (
@@ -71,7 +65,6 @@ class CardList extends React.Component {
           {items.map(({ eng, rus, id }) => (
             <Card
               onDeleted={() => {
-                console.log('###: 2 level');
                 onDeletedItem(id);
               }}
               key={id}

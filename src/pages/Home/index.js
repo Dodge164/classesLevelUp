@@ -1,5 +1,5 @@
 import React from 'react';
-import { database } from '../../services/firebase';
+// import { database } from '../../services/firebase';
 
 import {
   ClockCircleOutlined,
@@ -33,8 +33,6 @@ class HomePage extends React.Component {
   componentDidMount() {
     const { getUserCardsRef } = this.context;
     getUserCardsRef().on('value', (res) => {
-      console.log('===> this.res', res);
-      console.log('===> val', res.val());
       this.setState({
         wordsArr: res.val() || [],
       });
@@ -42,7 +40,6 @@ class HomePage extends React.Component {
   }
 
   handleSubmitButton = ({ eng, rus }) => {
-    console.log('===> this.context', this.context);
     const { getUserUidRef } = this.context;
     const { wordsArr } = this.state;
 
@@ -65,7 +62,7 @@ class HomePage extends React.Component {
 
   render() {
     const { wordsArr } = this.state;
-    console.log('===> this.props.user.uid', this.props.user.uid);
+
     return (
       <>
         <BackgroundBlock backgroundImg={firstBackground} fullHeight>
@@ -81,13 +78,6 @@ class HomePage extends React.Component {
           >
             Начать бесплатный урок
           </Button>
-          <button
-            onClick={() => {
-              console.log('===> кнопка ');
-            }}
-          >
-            кнопка
-          </button>
         </BackgroundBlock>
         <Section className={s.textCenter}>
           <Header size="l">
@@ -130,7 +120,7 @@ class HomePage extends React.Component {
           <CardList
             refEngInput={this.refEngInput}
             onSubmit={this.handleSubmitButton}
-            // onDeletedItem={this.handleDeletedItem}
+            onDeletedItem={this.handleDeletedItem}
             items={wordsArr}
           />
         </Section>
