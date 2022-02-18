@@ -70,6 +70,7 @@ class CardList extends React.Component {
               key={id}
               eng={eng}
               rus={rus}
+              index={id}
             />
           ))}
         </div>

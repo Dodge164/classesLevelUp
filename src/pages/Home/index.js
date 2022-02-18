@@ -1,5 +1,5 @@
 import React from 'react';
-// import { database } from '../../services/firebase';
+import { connect } from 'react-redux';
 
 import {
   ClockCircleOutlined,
@@ -20,6 +20,8 @@ import secondBackground from '../../assets/back2.jpg';
 
 import s from './Home.module.scss';
 import FirebaseContext from '../../context/firebaseContext';
+import * as actions from '../../actions';
+import { bindActionCreators } from 'redux';
 
 class HomePage extends React.Component {
   state = {
@@ -62,11 +64,26 @@ class HomePage extends React.Component {
 
   render() {
     const { wordsArr } = this.state;
-
+    const { countNumber, minusAction, plusAction } = this.props;
     return (
       <>
         <BackgroundBlock backgroundImg={firstBackground} fullHeight>
           <Header white>Время учить слова online</Header>
+          <Header white>{countNumber}</Header>
+          <Button
+            onBtnClick={() => {
+              plusAction(1);
+            }}
+          >
+            PLUS
+          </Button>{' '}
+          <Button
+            onBtnClick={() => {
+              minusAction(1);
+            }}
+          >
+            MINUS
+          </Button>
           <Paragraph white>
             Используйте карточки для запоминания и пополняйте активный словарный
             запас.
@@ -138,4 +155,12 @@ class HomePage extends React.Component {
   }
 }
 HomePage.contextType = FirebaseContext;
-export default HomePage;
+
+const mapStateToProps = (state) => {
+  return { countNumber: state.count };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(actions, dispatch);
+};
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

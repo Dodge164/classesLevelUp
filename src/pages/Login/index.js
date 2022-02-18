@@ -13,7 +13,6 @@ export default class LoginPage extends React.Component {
     const { history } = this.props;
 
     signWithEmail(email, password).then((res) => {
-      console.log('===> signWithEmail');
       setUserUid(res.user.uid);
       localStorage.setItem('user', res.user.uid);
       history.push('/');

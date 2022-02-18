@@ -1,5 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
+import { withRouter } from 'react-router-dom';
 import { CheckSquareOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import s from './Card.module.scss';
@@ -9,6 +10,18 @@ class Card extends React.Component {
     done: false,
     isRemembered: false,
   };
+
+  componentDidMount() {
+    const {
+      match: { params },
+      index,
+    } = this.props;
+    if (index === +params.id) {
+      this.setState({
+        done: params.isDone,
+      });
+    }
+  }
 
   handleCardClick = () => {
     if (!this.state.isRemembered) {
@@ -67,4 +80,4 @@ class Card extends React.Component {
   }
 }
 
-export default Card;
+export default withRouter(Card);

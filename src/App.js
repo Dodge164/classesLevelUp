@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { Route, Link, Switch, Redirect } from 'react-router-dom';
 
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
@@ -10,6 +10,7 @@ import s from './App.module.scss';
 import FirebaseContext from './context/firebaseContext';
 import Layout, { Content, Header } from 'antd/lib/layout/layout';
 import { PrivateRoute } from './utils/privateRoute';
+import CurrentCard from './pages/CurrentCard';
 
 class App extends React.Component {
   state = {
@@ -42,10 +43,10 @@ class App extends React.Component {
     }
 
     return (
-      <BrowserRouter>
+      <>
         <Route path="/login" component={LoginPage} />
         <Route
-          render={(props) => {
+          render={() => {
             return (
               <Layout>
                 <Header>
@@ -56,17 +57,27 @@ class App extends React.Component {
                     <Menu.Item key="2">
                       <Link to="/about">About</Link>
                     </Menu.Item>
+                    <Menu.Item key="3">
+                      <Link to="/word">Current Word</Link>
+                    </Menu.Item>
                   </Menu>
                 </Header>
                 <Content>
-                  <PrivateRoute exact path="/" component={HomePage} />
-                  <PrivateRoute path="/home" component={HomePage} />
+                  <Switch>
+                    <PrivateRoute exact path="/" component={HomePage} />
+                    <PrivateRoute
+                      path="/home/:id?/:isDone?"
+                      component={HomePage}
+                    />
+                    <PrivateRoute path="/word/:id?" component={CurrentCard} />
+                    <Redirect to="/" />
+                  </Switch>
                 </Content>
               </Layout>
             );
           }}
         />
-      </BrowserRouter>
+      </>
     );
   }
 }
