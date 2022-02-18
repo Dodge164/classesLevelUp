@@ -14,7 +14,6 @@ export default class Clock extends React.PureComponent {
   }
 
   componentDidMount() {
-    console.log('===> componentDidMount');
     this.interval = setInterval(this.tick, 1000);
   }
 

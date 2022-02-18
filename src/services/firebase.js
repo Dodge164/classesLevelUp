@@ -28,9 +28,14 @@ class Firebase {
 
   getCardsRef = () => this.database.ref('/cards');
 
+  // signOut = () => this.auth.signOut();
+
   getUserCardsRef = () => this.database.ref(`/cards/${this.userUid}`);
 
   getUserUidRef = () => this.database.ref(`/cards/${this.userUid}`);
+
+  getUserCurrentCardRef = (id) =>
+    this.database.ref(`/cards/${this.userUid}/${id}`);
 }
 
 export default Firebase;
