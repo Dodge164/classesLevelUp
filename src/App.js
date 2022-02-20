@@ -11,30 +11,29 @@ import FirebaseContext from './context/firebaseContext';
 import Layout, { Content, Header } from 'antd/lib/layout/layout';
 import { PrivateRoute } from './utils/privateRoute';
 import CurrentCard from './pages/CurrentCard';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addUserAction } from './actions';
 
 class App extends React.Component {
-  state = {
-    user: null,
-  };
-
   componentDidMount() {
     const { auth, setUserUid } = this.context;
+    const { addUser } = this.props;
     auth.onAuthStateChanged((user) => {
       if (user) {
         setUserUid(user.uid);
-        // localStorage.setItem('user', JSON.stringify(user.uid));
-        this.setState({ user });
+        localStorage.setItem('user', JSON.stringify(user.uid));
+        addUser(user);
       } else {
         setUserUid(null);
         localStorage.removeItem('user');
-        this.setState({ user: false });
       }
     });
   }
 
   render() {
-    const { user } = this.state;
-    if (user === null) {
+    const { userUid } = this.props;
+    if (userUid === null) {
       return (
         <div className={s.wrap_spin}>
           <Spin tip="Loading..." />
@@ -82,4 +81,19 @@ class App extends React.Component {
   }
 }
 App.contextType = FirebaseContext;
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    userUid: state.userReducer.userUid,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      addUser: addUserAction,
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

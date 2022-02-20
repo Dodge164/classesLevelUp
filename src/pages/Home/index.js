@@ -76,7 +76,7 @@ class HomePage extends React.Component {
             }}
           >
             PLUS
-          </Button>{' '}
+          </Button>
           <Button
             onBtnClick={() => {
               minusAction(1);
@@ -157,7 +157,8 @@ class HomePage extends React.Component {
 HomePage.contextType = FirebaseContext;
 
 const mapStateToProps = (state) => {
-  return { countNumber: state.count };
+  console.log('== state ==', state);
+  return { countNumber: state.counterReducer.count };
 };
 
 const mapDispatchToProps = (dispatch) => {

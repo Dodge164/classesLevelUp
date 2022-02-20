@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import * as actions from './actions';
+// import * as actions from './actions';
 import rootReducers from './reducers';
 import App from './App';
 
@@ -13,7 +13,10 @@ import Firebase from './services/firebase';
 import 'antd/dist/antd.min.css';
 import './index.css';
 
-const store = new createStore(rootReducers);
+const store = new createStore(
+  rootReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 ReactDom.render(
   <Provider store={store}>
