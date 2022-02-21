@@ -7,6 +7,20 @@ import {
   PLUS,
 } from './actionTypes';
 
+export const fetchCardList = (getData) => {
+  return (dispatch, getState) => {
+    dispatch(cardListAction());
+    getData()
+      .once('value')
+      .then((res) => {
+        dispatch(cardListResolveAction(res.val()));
+      })
+      .catch((err) => {
+        dispatch(cardListRejectAction(err));
+      });
+  };
+};
+
 export const plusAction = (amount) => {
   return {
     type: PLUS,

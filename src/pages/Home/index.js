@@ -32,13 +32,19 @@ class HomePage extends React.Component {
     this.refEngInput = React.createRef();
   }
 
+  // componentDidMount() {
+  //   const { getUserCardsRef } = this.context;
+  //   getUserCardsRef().on('value', (res) => {
+  //     this.setState({
+  //       wordsArr: res.val() || [],
+  //     });
+  //   });
+  // }
+
   componentDidMount() {
     const { getUserCardsRef } = this.context;
-    getUserCardsRef().on('value', (res) => {
-      this.setState({
-        wordsArr: res.val() || [],
-      });
-    });
+
+    actions.fetchCardList(getUserCardsRef);
   }
 
   handleSubmitButton = ({ eng, rus }) => {
@@ -158,7 +164,11 @@ HomePage.contextType = FirebaseContext;
 
 const mapStateToProps = (state) => {
   console.log('== state ==', state);
-  return { countNumber: state.counterReducer.count };
+  return {
+    countNumber: state.counterReducer.count,
+    isBusy: state.cardListReducer.isBusy,
+    wordsArr: state.cardListReducer.payload,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
